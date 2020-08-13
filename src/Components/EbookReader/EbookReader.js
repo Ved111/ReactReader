@@ -19,16 +19,10 @@ import queryString from 'query-string';
 
 const storage = global.localStorage || null;
 
-//var DEMO_URL = '';
-
 const urlParams = new URLSearchParams(window.location.search)
 
 
-var DEMO_URL = "https://incribobucket1.s3.us-east-2.amazonaws.com/ebooks/Admin+Incribo/Apps/gutenberg/A+Bad+Day+for+Vermin+by+Keith+Laumer.epub"
-//"https://incribobucket1.s3.us-east-2.amazonaws.com/ebooks/Admin+Incribo/Apps/gutenberg/A+Bad+Day+for+Vermin+by+Keith+Laumer.epub"
- //ebookURL
-//"https://incribobucket1.s3.us-east-2.amazonaws.com/ebooks/Admin%20Incribo/Apps/gutenberg/A%20Damsel%20in%20Distress%20by%20P.%20G.%20Wodehouse.epub?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI4Z6FJ6AIL7ZW3IA%2F20200614%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20200614T100702Z&X-Amz-Expires=900&X-Amz-Signature=3640cb15b58db710a714f57922ecaf828bf5e24d2827efd381635dda9f3ea01b&X-Amz-SignedHeaders=host"
-//"https://gerhardsletten.github.io/react-reader/files/alice.epub";
+var DEMO_URL = "" //ebook url
 const DEMO_NAME = //urlParams.get("query").split("/")[4].split("by")[0];
 "Alice in wonderland";
 
@@ -65,8 +59,9 @@ export default class EbookReader extends Component {
   
     constructor(props) {
         super(props)
+      // Passing the key to the server, which returns the presigned url of ebook, which is stored in s3
         console.log(props.location.state.detail)
-        axios.post('https://stormy-ravine-61146.herokuapp.com/api/aws/new2', props.location.state.detail)
+        axios.post('//server-url', props.location.state.detail)
           .then(res => {
             console.log(res.data.url);
             if(res.data.success) {
@@ -150,7 +145,6 @@ export default class EbookReader extends Component {
       };
 
       render() {
-       // const queryStrObj = queryString.parse(this.props.location.search)
         const { fullscreen, location, localFile, localName } = this.state;
         return (
           <Container>
@@ -167,19 +161,8 @@ export default class EbookReader extends Component {
               </ButtonWrapper>
             </Bar>
             <ReaderContainer fullscreen={fullscreen}>
-            {
-              // <ReactReader 
-              //   url={localFile || DEMO_URL }
-              //   title={localName || DEMO_NAME}
-              //   location={location}
-              //   locationChanged={this.onLocationChanged}
-              //   getRendition={this.getRendition}
-              // />
-            }
             <ReactReader 
-                url = "https://incribobucket1.s3.us-east-2.amazonaws.com/ebooks/Admin+Incribo/Apps/gutenberg/A+Book+on+Vegetable+Dyes+by+Ethel+Mairet.epub"
-                //"https://incribobucket1.s3.us-east-2.amazonaws.com/ebooks/Admin%20Incribo/Apps/gutenberg/%241_000%20a%20Plate%20by%20Jack%20McKenty.epub?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI4Z6FJ6AIL7ZW3IA%2F20200808%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20200808T000813Z&X-Amz-Expires=900&X-Amz-Signature=ac078cbc53f3f0771407acff610fd17a42c448f497afa7496b4fcd6dbd34b250&X-Amz-SignedHeaders=host"
-                //{DEMO_URL}
+                url = {DEMO_URL}
                 //{localFile || DEMO_URL }
                 title={localName || DEMO_NAME}
                 location={location}
